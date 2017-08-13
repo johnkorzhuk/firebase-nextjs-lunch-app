@@ -20,19 +20,27 @@ const Container = styled.div`
 
 const Header = styled.header``;
 
+declare type Restuarant = {
+  [string]: {
+    name: string
+  }
+};
+
 type Props = {
-  user: null | FirebaseUser
+  origUser: null | FirebaseUser,
+  origRestaurants: Restuarant
 };
 
 class Index extends Component {
   static async getInitialProps({ req }) {
-    const user = req && req.session ? req.session.decodedToken : null;
-    return { user };
+    const origUser = req && req.session ? req.session.decodedToken : null;
+    const origRestaurants: ?Restuarant = req && req.session ? req.session.restaurants : null;
+    return { origUser, origRestaurants };
   }
 
   state = {
-    user: this.props.user,
-    restaurants: null
+    user: this.props.origUser,
+    restaurants: this.props.origRestaurants
   };
 
   componentDidMount() {
